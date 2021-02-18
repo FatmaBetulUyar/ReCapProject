@@ -13,7 +13,7 @@ namespace ConsoleUI
 
             foreach (var car in carmanager.GetAll())
             {
-                Console.WriteLine(car.Id+ " " +car.Descrription);
+                Console.WriteLine(car.Id+ " " +car.Description);
             }
 
         }

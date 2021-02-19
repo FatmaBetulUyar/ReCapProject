@@ -15,24 +15,27 @@ namespace ConsoleUI
 
             foreach (var car in carmanager.GetCarsByColorId(2))
             {
-                Console.WriteLine(car.Description);
+                Console.WriteLine(car.CarName);
             }
             foreach (var car2 in carmanager.GetCarsByBrandId(2))
             {
-                Console.WriteLine(car2.Description);
+                Console.WriteLine(car2.CarName);
 
             }
 
-            carmanager.Add(new Car()
-            {
-                Id=7,
-                BrandId=2,
-                ColorId=1,
-                DailyPrice=125000,
-                ModelYear=2015,
-                Description="Toyota"
-            }
-            );
+            //carmanager.Add(new Car()
+            //{
+            //    Id=8,
+            //    BrandId=2,
+            //    ColorId=2,
+            //    DailyPrice=175000,
+            //    ModelYear=2018,
+            //    Description="Toyota"
+            //}
+            //);
+          
+
+            
         }
     }
 }

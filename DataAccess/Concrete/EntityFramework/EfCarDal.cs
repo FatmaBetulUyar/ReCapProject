@@ -13,7 +13,7 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, CarProjectContext>, ICarDal
     {
-        public List<Car> GetCarDetails()
+        public List<CarDetailDto> GetCarDetails()
         {
             using (CarProjectContext context = new CarProjectContext())
             {
@@ -33,6 +33,8 @@ namespace DataAccess.Concrete.EntityFramework
                 return result.ToList();
             }
 
-        } 
+        }
+
+        
     }
 }

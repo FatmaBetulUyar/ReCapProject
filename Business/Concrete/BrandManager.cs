@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -8,34 +9,34 @@ namespace Business.Concrete
 {
     public class BrandManager : IBrandService
     {
+        IBrandDal _brandDal;
+        public BrandManager(IBrandDal brandDal)
+        {
+            _brandDal = brandDal;
+        }
         public void Add(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Add(brand);
+            Console.WriteLine("Marka başarıyla eklendi");
         }
 
         public void Delete(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Delete(brand);
+            Console.WriteLine("Marka başarıyla silindi");
         }
 
         public List<Brand> GetAll()
         {
-            throw new NotImplementedException();
+            return _brandDal.GetAll();
         }
 
-        public List<Brand> GetCarsByBrandId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Brand> GetCarsByColorId(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public void Update(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Update(brand);
+            Console.WriteLine("Marka başarıyla güncellendi");
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Business.Concrete
         public void Delete(Car car)
         {
             _carDal.Delete(car);
+            Console.WriteLine("Araba başarıyla silindi");
         }
 
         public List<Car> GetAll()
@@ -59,6 +60,7 @@ namespace Business.Concrete
         public void Update(Car car)
         {
             _carDal.Update(car);
+            Console.WriteLine("Araba başarıyla güncellendi");
         }
     }
 }

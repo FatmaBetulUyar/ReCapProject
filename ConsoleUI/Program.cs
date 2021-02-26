@@ -15,97 +15,44 @@ namespace ConsoleUI
             CarManager carmanager = new CarManager(new EfCarDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-            //GetAllTest(carmanager);
-            //BrandIdTest(carmanager);
-            //ColorIdTest(carmanager);
+            //var result = carmanager.GetCarDetails();
+            //if (result.Success == true)
+            //{
+            //    foreach (var car in result.Data)
+            //    {
+            //        Console.WriteLine(car.CarName + "/" + car.BrandName);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
 
-            //AddCarTest(carmanager);
-            //AddColorTest(colorManager);
-            //AddBrandTest(brandManager);
+            RentalTest(rentalManager);
 
-
-            //UpdateColorTest(colorManager);
-            //UpdateCarTest(carmanager);
-
-            //DeleteCarTest(carmanager);
-            CarDetailsTest(carmanager);
+            DeliverTest(rentalManager);
 
         }
 
-        private static void CarDetailsTest(CarManager carmanager)
+        private static void DeliverTest(RentalManager rentalManager)
         {
-            foreach (var car in carmanager.GetCarDetails())
+            var result2 = rentalManager.DeliverCar(1, DateTime.Now);
+            Console.WriteLine(result2.Message);
+        }
+
+        private static void RentalTest(RentalManager rentalManager)
+        {
+            var result = rentalManager.Add(new Rental()
             {
-                Console.WriteLine("Araba adı : " + car.CarName + "Markası : " + car.BrandName + "Rengi : " + car.ColorName + "Günlük Fiyatı : " + car.DailyPrice);
-            }
-        }
-
-        private static void UpdateCarTest(CarManager carmanager)
-        {
-            carmanager.Update(new Car() { CarID = 1, BrandId = 2, ColorId = 1, CarName = "Toyota", DailyPrice = 1500, ModelYear = 2016 });
-        }
-
-        private static void UpdateColorTest(ColorManager colorManager)
-        {
-            colorManager.Update(new Color() { ColorId = 3, ColorName = "kırmızı" });
-        }
-
-        private static void AddBrandTest(BrandManager brandManager)
-        {
-            brandManager.Add(new Brand() { BrandId = 4, BrandName = "Mercedes" });
-        }
-
-        private static void AddColorTest(ColorManager colorManager)
-        {
-            colorManager.Add(new Color() { ColorId = 4, ColorName = "Mavi" });
-            
-        }
-
-        private static void DeleteCarTest(CarManager carmanager)
-        {
-            carmanager.Delete(new Car() { CarID = 8 });
-            
-        }
-
-        private static void ColorIdTest(CarManager carmanager)
-        {
-            foreach (var car2 in carmanager.GetCarsByColorId(2))
-            {
-                Console.WriteLine(car2.ColorId + " renk id li arabalar :" + car2.CarName);
-
-            }
-        }
-
-        private static void AddCarTest(CarManager carmanager)
-        {
-            carmanager.Add(new Car()
-            {
-                CarID = 9,
-                BrandId = 2,
-                ColorId = 2,
-                DailyPrice = 175000,
-                ModelYear = 2018,
-                CarName = "Toyota"
-            }
-           );
-        }
-
-        private static void GetAllTest(CarManager carmanager)
-        {
-            foreach (var car in carmanager.GetAll())
-            {
-                Console.WriteLine(car.CarName);
-            }
-        }
-
-        private static void BrandIdTest(CarManager carmanager)
-        {
-            foreach (var car2 in carmanager.GetCarsByBrandId(2))
-            {
-                Console.WriteLine(car2.BrandId + " id li arabalar :" + car2.CarName);
-
-            }
+                CarId = 1,
+                CustomerId = 2,
+                RentalId = 2,
+                RentDate = DateTime.Now
+            });
+            Console.WriteLine(result.Message);
         }
     }
 }

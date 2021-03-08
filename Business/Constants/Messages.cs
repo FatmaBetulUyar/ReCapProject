@@ -41,7 +41,8 @@ namespace Business.Constants
 
         public static string RentalFailed = "Kiralama işlemi gerçekleştirilemedi!";
         public static string DeliverAdd = "Araba teslim edildi.";
-
-
+       
+        public static string ImageAdded="Araba resmi eklendi";
+        public static string ExceededAddedImageLimit="Araba resmi limiti aşıldı.";
     }
 }

@@ -36,16 +36,22 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
 
-        [TransactionScopeAspect]
-        public IResult AddTransactionalTest(Car car)
-        {
-            throw new NotImplementedException();
-        }
-
+        [SecuredOperation("car.delete,admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
             return new SuccessResult(Messages.CarDeleted);
+        }
+
+        [SecuredOperation("car.update,admin")]
+        [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
+        public IResult Update(Car car)
+        {
+            _carDal.Update(car);
+            return new SuccessResult(Messages.CarUpdated);
+
         }
 
         [CacheAspect]
@@ -77,13 +83,19 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == id));
         }
 
-        [ValidationAspect(typeof(CarValidator))]
-        [CacheRemoveAspect("ICarService.Get")]
-        public IResult Update(Car car)
-        {
-            _carDal.Update(car);
-            return new SuccessResult(Messages.CarUpdated);
+       
 
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice < 250)
+            {
+                throw new Exception("");
+
+            }
+            Add(car);
+            return null;
         }
     }
 }

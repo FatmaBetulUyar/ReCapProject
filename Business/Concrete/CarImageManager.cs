@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
@@ -22,7 +25,10 @@ namespace Business.Concrete
         {
             _carImageDal = carImageDal;
         }
-       [ValidationAspect(typeof(CarImageValidator))]
+      
+        [ValidationAspect(typeof(CarImageValidator))]
+        [SecuredOperation("carimage.add,admin")]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(IFormFile file,CarImage carImage)
         {
             IResult result = BusinessRules.Run(CheckIfImageLimit(carImage.CarId));
@@ -38,6 +44,8 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
+        [SecuredOperation("carimage.delete,admin")]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage carImage)
         {
             FileHelper.Delete(carImage.ImagePath);
@@ -46,22 +54,9 @@ namespace Business.Concrete
             
         }
 
-        public IDataResult<List<CarImage>> GetAll()
-        {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
-        }
-
-        public IDataResult<CarImage> Get(int id)
-        {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarId == id));
-        }
-
-        public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
-        {
-            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(carId));
-        }
-        
         [ValidationAspect(typeof(CarImageValidator))]
+        [SecuredOperation("carimage.update,admin")]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(IFormFile file, CarImage carImage)
         {
             carImage.ImagePath = FileHelper.Update(_carImageDal.Get(c => c.CarImageId == carImage.CarImageId).ImagePath, file);
@@ -69,6 +64,27 @@ namespace Business.Concrete
             _carImageDal.Update(carImage);
             return new SuccessResult();
         }
+
+        [CacheAspect]
+        public IDataResult<List<CarImage>> GetAll()
+        {
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
+        }
+
+        [CacheAspect]
+        public IDataResult<CarImage> Get(int id)
+        {
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarId == id));
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        public IDataResult<List<CarImage>> GetImagesByCarId(int carId)
+        {
+            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(carId));
+        }
+        
+       
 
         public IResult CheckIfImageLimit(int carId)
         {
